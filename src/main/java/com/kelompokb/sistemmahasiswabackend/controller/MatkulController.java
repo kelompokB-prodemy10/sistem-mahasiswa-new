@@ -30,14 +30,9 @@ public class MatkulController {
     public DefaultResponse<MatkulDto> saveMatkul(@RequestBody MatkulDto matkulDto) {
         Matkul matkul = convertDtoToEntity(matkulDto);
         DefaultResponse<MatkulDto> response = new DefaultResponse<>();
-        Optional<Matkul> optional = matkulRepo.findById(matkulDto.getIdMatkul());
-        if (optional.isPresent()) {
-            response.setMessage("Error, Data Telah Tersedia");
-        } else {
-            matkulRepo.save(matkul);
-            response.setMessage("Data Jurusan Berhasil Tersimpan");
-            response.setData(matkulDto);
-        }
+        matkulRepo.save(matkul);
+        response.setMessage("Data Jurusan Berhasil Tersimpan");
+        response.setData(matkulDto);
         return response;
     }
 
