@@ -31,7 +31,7 @@ public class MatkulController {
         Matkul matkul = convertDtoToEntity(matkulDto);
         DefaultResponse<MatkulDto> response = new DefaultResponse<>();
         matkulRepo.save(matkul);
-        response.setMessage("Data Jurusan Berhasil Tersimpan");
+        response.setMessage("Data Matkul Berhasil Tersimpan");
         response.setData(matkulDto);
         return response;
     }

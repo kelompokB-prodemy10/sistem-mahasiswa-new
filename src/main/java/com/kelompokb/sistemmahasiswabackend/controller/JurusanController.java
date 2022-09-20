@@ -3,8 +3,10 @@ package com.kelompokb.sistemmahasiswabackend.controller;
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
 import com.kelompokb.sistemmahasiswabackend.model.dto.JurusanDto;
 import com.kelompokb.sistemmahasiswabackend.model.dto.MahasiswaDto;
+import com.kelompokb.sistemmahasiswabackend.model.dto.MatkulDto;
 import com.kelompokb.sistemmahasiswabackend.model.entity.Jurusan;
 import com.kelompokb.sistemmahasiswabackend.model.entity.Mahasiswa;
+import com.kelompokb.sistemmahasiswabackend.model.entity.Matkul;
 import com.kelompokb.sistemmahasiswabackend.repository.JurusanRepo;
 import com.kelompokb.sistemmahasiswabackend.service.ServiceJurusanImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,9 @@ public class JurusanController {
     public DefaultResponse<JurusanDto> saveJurusan(@RequestBody JurusanDto jurusanDto) {
         Jurusan jurusan = convertDtoToEntity(jurusanDto);
         DefaultResponse<JurusanDto> response = new DefaultResponse<>();
-
+        jurusanRepo.save(jurusan);
+        response.setMessage("Data Jurusan Berhasil Tersimpan");
+        response.setData(jurusanDto);
         return response;
     }
 
