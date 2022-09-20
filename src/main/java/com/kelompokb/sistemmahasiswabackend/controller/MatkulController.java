@@ -1,7 +1,9 @@
 package com.kelompokb.sistemmahasiswabackend.controller;
 
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
+import com.kelompokb.sistemmahasiswabackend.model.dto.JurusanDto;
 import com.kelompokb.sistemmahasiswabackend.model.dto.MatkulDto;
+import com.kelompokb.sistemmahasiswabackend.model.entity.Jurusan;
 import com.kelompokb.sistemmahasiswabackend.model.entity.Matkul;
 import com.kelompokb.sistemmahasiswabackend.repository.MatkulRepo;
 import com.kelompokb.sistemmahasiswabackend.service.ServiceMatkulImp;
@@ -39,7 +41,7 @@ public class MatkulController {
         return response;
     }
 
-    @GetMapping("/listMatkul")
+    @GetMapping("/listmatkul")
     public List<MatkulDto> getListMatkul() {
         List<MatkulDto> list = new ArrayList<>();
         for (Matkul matkul : matkulRepo.findAll()) {
@@ -49,18 +51,15 @@ public class MatkulController {
     }
 
     @GetMapping("/byid/{idMatkul}")
-    public DefaultResponse getById(@PathVariable Integer idMatkul, @RequestBody MatkulDto matkuldto) {
-        DefaultResponse df = new DefaultResponse();
-        Optional<Matkul> matkulOps = matkulRepo.findById(idMatkul);
-        if (matkulOps.isPresent()) {
-            df.setStatus(Boolean.TRUE);
-            df.setMessage("Jurusan Yang Anda Pilih Telah Tersimpan");
-            df.setData(matkuldto);
-        } else {
-            df.setStatus(Boolean.FALSE);
-            df.setMessage("Jurusan Yang Anda Pilih Tidak Tersedia");
+    public MatkulDto getMatkulById(@PathVariable Integer idMatkul) {
+        Optional<Matkul> optionalMatkul = matkulRepo.findById(idMatkul);
+        MatkulDto dto = new MatkulDto();
+        if (optionalMatkul.isPresent()) {
+            Matkul entity = optionalMatkul.get();
+            dto.setIdMatkul(entity.getIdMatkul());
+            dto.setNamaMatkul(entity.getNamaMatkul());
         }
-        return df;
+        return dto;
     }
 
     @PutMapping("/up/{idMatkul}")

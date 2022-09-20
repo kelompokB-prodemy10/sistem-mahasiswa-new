@@ -2,7 +2,9 @@ package com.kelompokb.sistemmahasiswabackend.controller;
 
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
 import com.kelompokb.sistemmahasiswabackend.model.dto.JurusanDto;
+import com.kelompokb.sistemmahasiswabackend.model.dto.MahasiswaDto;
 import com.kelompokb.sistemmahasiswabackend.model.entity.Jurusan;
+import com.kelompokb.sistemmahasiswabackend.model.entity.Mahasiswa;
 import com.kelompokb.sistemmahasiswabackend.repository.JurusanRepo;
 import com.kelompokb.sistemmahasiswabackend.service.ServiceJurusanImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,7 @@ public class JurusanController {
     public DefaultResponse<JurusanDto> saveJurusan(@RequestBody JurusanDto jurusanDto) {
         Jurusan jurusan = convertDtoToEntity(jurusanDto);
         DefaultResponse<JurusanDto> response = new DefaultResponse<>();
-        Optional<Jurusan> optional = jurusanRepo.findById(jurusanDto.getIdJurusan());
-        if (optional.isPresent()) {
-            response.setMessage("Error, Data Telah Tersedia");
-        } else {
-            jurusanRepo.save(jurusan);
-            response.setMessage("Data Jurusan Berhasil Tersimpan");
-            response.setData(jurusanDto);
-        }
+
         return response;
     }
 
@@ -49,17 +44,15 @@ public class JurusanController {
     }
 
     @GetMapping("/byid/{idJurusan}")
-    public DefaultResponse getById(@PathVariable Integer idJurusan) {
-        DefaultResponse df = new DefaultResponse();
-        Optional<Jurusan> jurusanOps = jurusanRepo.findById(idJurusan);
-        if (jurusanOps.isPresent()) {
-            df.setStatus(Boolean.TRUE);
-            df.setMessage("Jurusan Yang Anda Pilih Telah Tersimpan");
-        } else {
-            df.setStatus(Boolean.FALSE);
-            df.setMessage("Jurusan Yang Anda Pilih Tidak Tersedia");
+    public JurusanDto getJurusanById(@PathVariable Integer idJurusan) {
+        Optional<Jurusan> optionalJurusan = jurusanRepo.findById(idJurusan);
+        JurusanDto dto = new JurusanDto();
+        if (optionalJurusan.isPresent()) {
+            Jurusan entity = optionalJurusan.get();
+            dto.setIdJurusan(entity.getIdJurusan());
+            dto.setNamaJurusan(entity.getNamaJurusan());
         }
-        return df;
+        return dto;
     }
 
     @PutMapping("/up/{idJurusan}")
