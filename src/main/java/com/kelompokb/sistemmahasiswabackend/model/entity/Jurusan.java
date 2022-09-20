@@ -1,15 +1,14 @@
 package com.kelompokb.sistemmahasiswabackend.model.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tab_jurusan")
 public class Jurusan {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_jurusan")
     private Integer idJurusan;
     private String namaJurusan;
 

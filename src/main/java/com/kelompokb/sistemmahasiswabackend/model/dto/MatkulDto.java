@@ -1,8 +1,8 @@
 package com.kelompokb.sistemmahasiswabackend.model.dto;
 
 public class MatkulDto {
-    private Integer IdMatkul;
     private String namaMatkul;
+    private Integer IdMatkul;
 
     public Integer getIdMatkul() {
         return IdMatkul;

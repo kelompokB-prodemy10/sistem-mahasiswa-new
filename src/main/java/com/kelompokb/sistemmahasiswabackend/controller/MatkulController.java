@@ -39,7 +39,7 @@ public class MatkulController {
         return response;
     }
 
-    @GetMapping("/listmatkul")
+    @GetMapping("/listMatkul")
     public List<MatkulDto> getListMatkul() {
         List<MatkulDto> list = new ArrayList<>();
         for (Matkul matkul : matkulRepo.findAll()) {
@@ -48,13 +48,14 @@ public class MatkulController {
         return list;
     }
 
-    @GetMapping("/byid/{idmatkul}")
-    public DefaultResponse getById(@PathVariable Integer idMatkul) {
+    @GetMapping("/byid/{idMatkul}")
+    public DefaultResponse getById(@PathVariable Integer idMatkul, @RequestBody MatkulDto matkuldto) {
         DefaultResponse df = new DefaultResponse();
         Optional<Matkul> matkulOps = matkulRepo.findById(idMatkul);
         if (matkulOps.isPresent()) {
             df.setStatus(Boolean.TRUE);
             df.setMessage("Jurusan Yang Anda Pilih Telah Tersimpan");
+            df.setData(matkuldto);
         } else {
             df.setStatus(Boolean.FALSE);
             df.setMessage("Jurusan Yang Anda Pilih Tidak Tersedia");
@@ -62,13 +63,13 @@ public class MatkulController {
         return df;
     }
 
-    @PutMapping("/up/{idmatkul}")
+    @PutMapping("/up/{idMatkul}")
     public ResponseEntity<Matkul> updateMatkul(@PathVariable("idMatkul") Integer idMatkul, @RequestBody Matkul matkul) {
         serviceMatkulImp.updateMatkul(idMatkul, matkul);
         return new ResponseEntity<>(serviceMatkulImp.getMatkulById(idMatkul), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idmatkul}")
+    @DeleteMapping("/{idMatkul}")
     public ResponseEntity<Matkul> delMatkul(@PathVariable("idMatkul") Integer idMatkul) {
         serviceMatkulImp.delMatkul(idMatkul);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
