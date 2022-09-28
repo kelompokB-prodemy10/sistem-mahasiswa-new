@@ -8,6 +8,8 @@ import com.kelompokb.sistemmahasiswabackend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,6 +48,24 @@ public class LoginController {
             dto.setUsername(user.getUsername());
             dto.setRole(user.getRole());
         }
+        return dto;
+    }
+    @GetMapping("/users")
+    public List<UserDto> getListUser() {
+        List<UserDto> list = new ArrayList();
+        for (User i : userRepo.findAll()) {
+            list.add(convertEntityToDto(i));
+        }
+        return list;
+    }
+
+    public UserDto convertEntityToDto(User entity) {
+        UserDto dto = new UserDto();
+        dto.setIdUser(entity.getIdUser());
+        dto.setUsername(entity.getUsername());
+        dto.setPassword(entity.getPassword());
+        dto.setRole(entity.getRole());
+
         return dto;
     }
 
