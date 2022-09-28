@@ -1,9 +1,17 @@
 package com.kelompokb.sistemmahasiswabackend.model.dto;
 
 public class LoginDto {
-
+    private Integer idUser;
     private String username;
     private String role;
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
 
     public String getUsername() {
         return username;

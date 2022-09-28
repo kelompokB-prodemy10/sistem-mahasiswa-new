@@ -25,6 +25,7 @@ public class LoginController {
             response.setStatus(Boolean.TRUE);
             response.setMessage("Login Berhasil");
             User user = optionalUser.get();
+            loginDto.setIdUser(user.getIdUser());
             loginDto.setRole(user.getRole());
             loginDto.setUsername(user.getUsername());
             response.setData(loginDto);
