@@ -2,9 +2,7 @@ package com.kelompokb.sistemmahasiswabackend.controller;
 
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
 import com.kelompokb.sistemmahasiswabackend.model.dto.LoginDto;
-import com.kelompokb.sistemmahasiswabackend.model.dto.MahasiswaDto;
 import com.kelompokb.sistemmahasiswabackend.model.dto.UserDto;
-import com.kelompokb.sistemmahasiswabackend.model.entity.Mahasiswa;
 import com.kelompokb.sistemmahasiswabackend.model.entity.User;
 import com.kelompokb.sistemmahasiswabackend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
