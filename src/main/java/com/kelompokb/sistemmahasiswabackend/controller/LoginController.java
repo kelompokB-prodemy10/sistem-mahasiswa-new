@@ -2,7 +2,9 @@ package com.kelompokb.sistemmahasiswabackend.controller;
 
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
 import com.kelompokb.sistemmahasiswabackend.model.dto.LoginDto;
+import com.kelompokb.sistemmahasiswabackend.model.dto.MahasiswaDto;
 import com.kelompokb.sistemmahasiswabackend.model.dto.UserDto;
+import com.kelompokb.sistemmahasiswabackend.model.entity.Mahasiswa;
 import com.kelompokb.sistemmahasiswabackend.model.entity.User;
 import com.kelompokb.sistemmahasiswabackend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,27 @@ public class LoginController {
         dto.setRole(entity.getRole());
 
         return dto;
+    }
+
+    @PutMapping("/{idUser}")
+    public DefaultResponse update(@PathVariable Integer idUser, @RequestBody UserDto userDto) {
+        DefaultResponse df = new DefaultResponse();
+        Optional<User> optionalUser = userRepo.findById(idUser);
+        User user = optionalUser.get();
+        if (optionalUser.isPresent()) {
+            user.setIdUser(userDto.getIdUser());
+            user.setUsername(userDto.getUsername());
+            user.setPassword(userDto.getPassword());
+            user.setRole(userDto.getRole());
+            userRepo.save(user);
+            df.setStatus(Boolean.TRUE);
+            df.setData(userDto);
+            df.setMessage("Perubahan Berhasil Tersimpan");
+        } else {
+            df.setStatus(Boolean.FALSE);
+            df.setMessage("ID Tidak Ditemukan");
+        }
+        return df;
     }
 
     @PostMapping("/register")
