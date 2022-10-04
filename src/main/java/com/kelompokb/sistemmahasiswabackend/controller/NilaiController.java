@@ -3,9 +3,7 @@ package com.kelompokb.sistemmahasiswabackend.controller;
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
 import com.kelompokb.sistemmahasiswabackend.model.dto.NilaiDto;
 import com.kelompokb.sistemmahasiswabackend.model.dto.NilaiIdDto;
-import com.kelompokb.sistemmahasiswabackend.model.dto.UjianDto;
 import com.kelompokb.sistemmahasiswabackend.model.entity.Nilai;
-import com.kelompokb.sistemmahasiswabackend.model.entity.Ujian;
 import com.kelompokb.sistemmahasiswabackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +35,7 @@ public class NilaiController {
         Optional<Nilai> optionalMhs  = nilaiRepo.findByIdMhs(nilaiDto.getIdMhs());
         Optional<Nilai> optionalUjian = nilaiRepo.findByIdUjian(nilaiDto.getIdUjian());
         Optional<Nilai> optionalJurusan = nilaiRepo.findByIdJurusan(nilaiDto.getIdJurusan());
-        Optional<Nilai> optionalMatkul = nilaiRepo.findByIdMatkul(nilai.getIdMatkul());
+        Optional<Nilai> optionalMatkul = nilaiRepo.findByIdMatkul(nilaiDto.getIdMatkul());
         if (optionalMhs.isPresent() && optionalUjian.isPresent() && optionalJurusan.isPresent() && optionalMatkul.isPresent()) {
             df.setStatus(Boolean.FALSE);
             df.setMessage("Gagal, Data Nilai Sudah Terdaftar");
@@ -90,8 +88,8 @@ public class NilaiController {
             dto.setIdJurusan(entity.getJurusan().getIdJurusan());
             dto.setJudulUjian(entity.getUjian().getJudulUjian());
             dto.setStatUjian(entity.getUjian().getStatUjian());
-            dto.setMatkul(entity.getMatkul());
-            dto.setJurusan(entity.getJurusan());
+//            dto.setMatkul(entity.getMatkul());
+//            dto.setJurusan(entity.getJurusan());
             dto.setNilai(entity.getNilai());
         }
         return dto;

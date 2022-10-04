@@ -105,7 +105,6 @@ public class UjianController {
         ujian.setIdMatkul(dto.getIdMatkul());
         ujian.setStatUjian(dto.getStatUjian());
 
-
         return ujian;
     }
     public Ujian convertEntityToDto(Ujian entity){

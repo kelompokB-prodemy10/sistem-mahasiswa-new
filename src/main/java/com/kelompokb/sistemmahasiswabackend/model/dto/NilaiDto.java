@@ -17,8 +17,8 @@ public class NilaiDto {
     private String statUjian;
 
 
-    private Jurusan jurusan;
-    private Matkul matkul;
+//    private Jurusan jurusan;
+//    private Matkul matkul;
 
     public Integer getIdNilai() {
         return idNilai;
@@ -108,19 +108,19 @@ public class NilaiDto {
         this.statUjian = statUjian;
     }
 
-    public Jurusan getJurusan() {
-        return jurusan;
-    }
-
-    public void setJurusan(Jurusan jurusan) {
-        this.jurusan = jurusan;
-    }
-
-    public Matkul getMatkul() {
-        return matkul;
-    }
-
-    public void setMatkul(Matkul matkul) {
-        this.matkul = matkul;
-    }
+//    public Jurusan getJurusan() {
+//        return jurusan;
+//    }
+//
+//    public void setJurusan(Jurusan jurusan) {
+//        this.jurusan = jurusan;
+//    }
+//
+//    public Matkul getMatkul() {
+//        return matkul;
+//    }
+//
+//    public void setMatkul(Matkul matkul) {
+//        this.matkul = matkul;
+//    }
 }
