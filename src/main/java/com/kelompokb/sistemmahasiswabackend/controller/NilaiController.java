@@ -1,13 +1,12 @@
 package com.kelompokb.sistemmahasiswabackend.controller;
 
-
 import com.kelompokb.sistemmahasiswabackend.model.dto.DefaultResponse;
 import com.kelompokb.sistemmahasiswabackend.model.dto.NilaiDto;
 import com.kelompokb.sistemmahasiswabackend.model.dto.NilaiIdDto;
+import com.kelompokb.sistemmahasiswabackend.model.dto.UjianDto;
 import com.kelompokb.sistemmahasiswabackend.model.entity.Nilai;
-import com.kelompokb.sistemmahasiswabackend.repository.MahasiswaRepo;
-import com.kelompokb.sistemmahasiswabackend.repository.NilaiRepo;
-import com.kelompokb.sistemmahasiswabackend.repository.UjianRepo;
+import com.kelompokb.sistemmahasiswabackend.model.entity.Ujian;
+import com.kelompokb.sistemmahasiswabackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins="http://localhost:8080")
 @RestController
 @RequestMapping("/nilai")
 public class NilaiController {
@@ -26,14 +24,21 @@ public class NilaiController {
     private MahasiswaRepo mahasiswaRepo;
     @Autowired
     private UjianRepo ujianRepo;
+    @Autowired
+    private MatkulRepo matkulRepo;
+    @Autowired
+    private JurusanRepo jurusanRepo;
 
+    @CrossOrigin
     @PostMapping("/savenilai") //save nilai dengan autogenerate OKE
     public DefaultResponse<NilaiIdDto> saveNilai(@RequestBody NilaiIdDto nilaiDto) {
         Nilai nilai = convertDtoToEntity(nilaiDto);
         DefaultResponse<NilaiIdDto> df = new DefaultResponse<>();
         Optional<Nilai> optionalMhs  = nilaiRepo.findByIdMhs(nilaiDto.getIdMhs());
         Optional<Nilai> optionalUjian = nilaiRepo.findByIdUjian(nilaiDto.getIdUjian());
-        if (optionalMhs.isPresent() && optionalUjian.isPresent()) {
+        Optional<Nilai> optionalJurusan = nilaiRepo.findByIdJurusan(nilaiDto.getIdJurusan());
+        Optional<Nilai> optionalMatkul = nilaiRepo.findByIdMatkul(nilai.getIdMatkul());
+        if (optionalMhs.isPresent() && optionalUjian.isPresent() && optionalJurusan.isPresent() && optionalMatkul.isPresent()) {
             df.setStatus(Boolean.FALSE);
             df.setMessage("Gagal, Data Nilai Sudah Terdaftar");
         } else {
@@ -44,7 +49,7 @@ public class NilaiController {
         }
         return df;
     }
-//    @PostMapping("/savenilai") //save nilai dengan autogenerate OKE
+    //    @PostMapping("/savenilai") //save nilai dengan autogenerate OKE
 //    public DefaultResponse<NilaiIdDto> saveNilai(@RequestBody NilaiIdDto nilaiDto) {
 //        Nilai nilai = convertDtoToEntity(nilaiDto);
 //        DefaultResponse<NilaiIdDto> df = new DefaultResponse<>();
@@ -60,7 +65,7 @@ public class NilaiController {
 //        }
 //        return df;
 //}
-
+    @CrossOrigin
     @GetMapping("/listnilai") //list nilai OKE
     public List<NilaiDto> getListNilai() {
         List<NilaiDto> list = new ArrayList<>();
@@ -70,6 +75,7 @@ public class NilaiController {
         return list;
     }
 
+    @CrossOrigin
     @GetMapping("/getnilai/{idNilai}")
     public NilaiDto getById(@PathVariable Integer idNilai) {
         Optional<Nilai> optionalNilai = nilaiRepo.findById(idNilai);
@@ -80,23 +86,28 @@ public class NilaiController {
             dto.setIdMhs(entity.getMahasiswa().getIdMhs());
             dto.setName(entity.getMahasiswa().getName());
             dto.setIdUjian(entity.getUjian().getIdUjian());
+            dto.setIdMatkul(entity.getMatkul().getIdMatkul());
+            dto.setIdJurusan(entity.getJurusan().getIdJurusan());
             dto.setJudulUjian(entity.getUjian().getJudulUjian());
             dto.setStatUjian(entity.getUjian().getStatUjian());
+            dto.setMatkul(entity.getMatkul());
+            dto.setJurusan(entity.getJurusan());
             dto.setNilai(entity.getNilai());
         }
         return dto;
     }
-
-    @PutMapping("/update")
-    public DefaultResponse update(@RequestBody NilaiDto nilaiDto) {
+    @CrossOrigin
+    @PutMapping("/update/{idNilai}")
+    public DefaultResponse update(@PathVariable Integer idNilai, @RequestBody NilaiDto nilaiDto) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Nilai> optionalMhs  = nilaiRepo.findByIdMhs(nilaiDto.getIdMhs());
-        Optional<Nilai> optionalUjian = nilaiRepo.findByIdUjian(nilaiDto.getIdUjian());
-        if (optionalMhs.isPresent() && optionalUjian.isPresent()) {
-            Nilai nilai = optionalMhs.get();
+        Optional<Nilai> optionalNilai = nilaiRepo.findById(idNilai);
+        Nilai nilai = optionalNilai.get();
+        if (optionalNilai.isPresent()) {
             nilai.setIdNilai(nilaiDto.getIdNilai());
             nilai.setIdMhs(nilaiDto.getIdMhs());
             nilai.setIdUjian(nilaiDto.getIdUjian());
+            nilai.setIdJurusan(nilaiDto.getIdJurusan());
+            nilai.setIdMatkul(nilaiDto.getIdMatkul());
             nilai.setNilai(nilaiDto.getNilai());
             nilaiRepo.save(nilai);
             df.setStatus(Boolean.TRUE);
@@ -109,14 +120,13 @@ public class NilaiController {
         return df;
     }
 
-    @DeleteMapping("/delete")
-    public DefaultResponse deleteById(@RequestBody NilaiDto nilaiDto) {
+    @CrossOrigin
+    @DeleteMapping("/delete/{idNilai}")
+    public DefaultResponse deletById(@PathVariable Integer idNilai) {
         DefaultResponse df = new DefaultResponse();
-        Optional<Nilai> optionalMhs  = nilaiRepo.findByIdMhs(nilaiDto.getIdMhs());
-        Optional<Nilai> optionalUjian = nilaiRepo.findByIdUjian(nilaiDto.getIdUjian());
-        Nilai nilai = convertDtoToEnNilai(nilaiDto);
-        if (optionalMhs.isPresent() && optionalUjian.isPresent()){
-            nilaiRepo.delete(nilai);
+        Optional<Nilai> optionalNilai = nilaiRepo.findById(idNilai);
+        if (optionalNilai.isPresent()){
+            nilaiRepo.delete(optionalNilai.get());
             df.setStatus(Boolean.TRUE);
             df.setMessage("Data Berhasil Dihapus");
         } else {
@@ -130,6 +140,10 @@ public class NilaiController {
         NilaiDto dto = new NilaiDto();
         dto.setIdNilai(entity.getIdNilai());
         dto.setIdMhs(entity.getMahasiswa().getIdMhs());
+        dto.setIdJurusan(entity.getJurusan().getIdJurusan());
+        dto.setIdMatkul(entity.getMatkul().getIdMatkul());
+        dto.setNamaJurusan(entity.getJurusan().getNamaJurusan());
+        dto.setNamaMatkul(entity.getMatkul().getNamaMatkul());
         dto.setName(entity.getMahasiswa().getName());
         dto.setIdUjian(entity.getUjian().getIdUjian());
         dto.setJudulUjian(entity.getUjian().getJudulUjian());
@@ -144,6 +158,8 @@ public class NilaiController {
         nilai.setIdNilai(nilaiDto.getIdNilai());
         nilai.setIdMhs(nilaiDto.getIdMhs());
         nilai.setIdUjian(nilaiDto.getIdUjian());
+        nilai.setIdJurusan(nilaiDto.getIdJurusan());
+        nilai.setIdMatkul(nilaiDto.getIdMatkul());
         nilai.setNilai(nilaiDto.getNilai());
 
         return nilai;
@@ -154,6 +170,8 @@ public class NilaiController {
         n.setIdNilai(dto.getIdNilai());
         n.setIdMhs(dto.getIdMhs());
         n.setIdUjian(dto.getIdUjian());
+        n.setIdJurusan(dto.getIdJurusan());
+        n.setIdMatkul(dto.getIdMatkul());
         n.setNilai(dto.getNilai());
         return n;
     }

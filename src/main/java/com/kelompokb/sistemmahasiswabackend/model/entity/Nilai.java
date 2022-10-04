@@ -18,6 +18,10 @@ public class Nilai {
     private Integer idUjian;
     @Column(name = "nilai")
     private Integer Nilai;
+    @Column(name = "id_matkul")
+    private Integer idMatkul;
+    @Column(name = "id_jurusan")
+    private Integer idJurusan;
 
     @OneToOne
     @JoinColumn(name = "id_ujian", insertable = false, updatable = false)
@@ -27,6 +31,13 @@ public class Nilai {
     @JoinColumn(name = "id_mhs", insertable = false, updatable = false)
     private Mahasiswa mahasiswa;
 
+    @OneToOne
+    @JoinColumn(name = "id_matkul", insertable = false, updatable = false)
+    private Matkul matkul;
+
+    @OneToOne
+    @JoinColumn(name = "id_jurusan", insertable = false, updatable = false)
+    private Jurusan jurusan;
 
     public Integer getIdNilai() {
         return idNilai;
@@ -60,6 +71,22 @@ public class Nilai {
         Nilai = nilai;
     }
 
+    public Integer getIdMatkul() {
+        return idMatkul;
+    }
+
+    public void setIdMatkul(Integer idMatkul) {
+        this.idMatkul = idMatkul;
+    }
+
+    public Integer getIdJurusan() {
+        return idJurusan;
+    }
+
+    public void setIdJurusan(Integer idJurusan) {
+        this.idJurusan = idJurusan;
+    }
+
     public Ujian getUjian() {
         return ujian;
     }
@@ -74,5 +101,21 @@ public class Nilai {
 
     public void setMahasiswa(Mahasiswa mahasiswa) {
         this.mahasiswa = mahasiswa;
+    }
+
+    public Matkul getMatkul() {
+        return matkul;
+    }
+
+    public void setMatkul(Matkul matkul) {
+        this.matkul = matkul;
+    }
+
+    public Jurusan getJurusan() {
+        return jurusan;
+    }
+
+    public void setJurusan(Jurusan jurusan) {
+        this.jurusan = jurusan;
     }
 }
